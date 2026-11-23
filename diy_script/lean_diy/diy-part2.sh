@@ -100,5 +100,10 @@ chmod +x files/etc/uci-defaults/99-custom-ssh-config
 
 #------------------------------------------------end 修改脚本-------------------------------------------------------
 
+# 修复 libtirpc 1.3.3 在新版 gcc 下 host 编译报 conflicting types（补 -std=c99）
+if [ -f feeds/packages/libs/libtirpc/Makefile ]; then
+  grep -q 'std=c99' feeds/packages/libs/libtirpc/Makefile || \
+    sed -i 's/HOST_CFLAGS += -DGQ/HOST_CFLAGS += -DGQ -std=c99/' feeds/packages/libs/libtirpc/Makefile
+fi
 
 echo "DIY2 is complate!"
