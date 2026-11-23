@@ -1,9 +1,10 @@
 <details> <summary> <b>openwrt-passwall2 new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall2/compare/ccae1fd66e0b6528150d80fe6834b20ed2030db6...31b52656aec8565d28835a936249a6a773955251)  
+#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall2/compare/31b52656aec8565d28835a936249a6a773955251...d9ba18d0443e6c66fc254beacf63367ca4a4c85d)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-31b5265|A-BO|Mon Nov 23 20:39:09 2026 +0800|luci: optimize
+d9ba18d|A-BO|Mon Nov 23 23:53:09 2026 +0800|luci: prevent line wrapping in client and server logs
+7cad798|A-BO|Mon Nov 23 22:26:19 2026 +0800|luci: bump 26.11.23
 </details>

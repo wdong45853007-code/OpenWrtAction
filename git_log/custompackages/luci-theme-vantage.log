@@ -1,9 +1,0 @@
-<details> <summary> <b>luci-theme-vantage new commit log :rocket: </b> </summary>
-
-#### [:mega: Full Changelog. ](https://github.com/anothaDev/luci-theme-vantage/compare/a7ff63b715bca51effb5ab2d488dfff6cff1b16a...df52ecbf310e67b9ab36fc60c4a7df324427c043)  
-:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
-
-SHA|Author|Date|Message
--|-|-|-
-df52ecb|anothaDev|Mon Nov 23 12:21:45 2026 +0200|Build with the OpenWrt 25.12.6 SDK (#162)
-</details>

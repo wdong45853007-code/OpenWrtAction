@@ -1,0 +1,16 @@
+<details> <summary> <b>lede new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/lede/compare/81ed85f7559527ab8dda2e2fdb5bb35e39712d7e...e1c6f44884697194f2b90588d8fe7c636bb9f09c)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+e1c6f4488|coolsnowwolf|Tue Nov 24 01:36:32 2026 +0800|kernel: bump 7.3 to 7.3.6
+3bf60af8b|coolsnowwolf|Tue Nov 24 01:36:32 2026 +0800|kernel: bump 6.18 to 6.18.65
+dd28d9966|coolsnowwolf|Tue Nov 24 01:36:32 2026 +0800|kernel: bump 6.12 to 6.12.119
+b463ee9ee|coolsnowwolf|Tue Nov 24 01:36:32 2026 +0800|kernel: bump 6.6 to 6.6.163
+0bd6726eb|coolsnowwolf|Tue Nov 24 01:36:32 2026 +0800|kernel: bump 6.1 to 6.1.193
+8c27e0be7|coolsnowwolf|Tue Nov 24 01:36:31 2026 +0800|kernel: bump 5.15 to 5.15.226
+d9e460510|coolsnowwolf|Tue Nov 24 01:36:31 2026 +0800|kernel: bump 5.10 to 5.10.275
+7810b38c5|coolsnowwolf|Tue Nov 24 01:01:33 2026 +0800|kernel: leave fraglist GRO disabled by default on Linux 7.3
+</details>
