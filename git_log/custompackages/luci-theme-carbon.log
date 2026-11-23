@@ -1,11 +1,12 @@
 <details> <summary> <b>luci-theme-carbon new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/mrjoechen/luci-theme-carbon/compare/239cf7b2f33dd93c34251ad201c4322fa279b3bd...f2a2d575d611b16f7f9aad899219aeef25bd2d3e)  
+#### [:mega: Full Changelog. ](https://github.com/mrjoechen/luci-theme-carbon/compare/f2a2d575d611b16f7f9aad899219aeef25bd2d3e...80c0837c3ee0374b025e096f6b9cd25c2c41b1db)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-f2a2d57|Joe Chen|Mon Nov 23 15:34:07 2026 +0800|Update README.md
-cad08b7|mrjoechen|Mon Nov 23 14:15:49 2026 +0800|Deduplicate duplicate hwmon and thermal temperature sensors
-454998d|FateLightX|Mon Nov 23 14:08:57 2026 +0800|Add FlowCone, HONK and irqbalance sidebar icon mappings (#16)
+80c0837|mrjoechen|Mon Nov 23 21:06:09 2026 +0800|Redesign Carbon logo with layered glass hexagon and aligned icon radii
+f0f6ad1|mrjoechen|Mon Nov 23 21:04:48 2026 +0800|Add desktop and mobile intro image and simplify preview temperature mock
+405e9fa|mrjoechen|Mon Nov 23 18:03:46 2026 +0800|Fall back to GitHub Pages when GitHub online update checks or downloads fail
+d93ad06|mrjoechen|Mon Nov 23 17:29:45 2026 +0800|Adapt online updater, installer, and tests for OpenWrt 23.05
 </details>

@@ -19,5 +19,5 @@ luci-app-ddns-go:7092e6de6ad9fe3f7d327f70468dfd19e00d6f0e
 openwrt-smartdns:4be700dc3366275605a2a1996865d83ea9bb9a18
 luci-app-smartdns:8f0c70281189fbdc1cd102bc134c1f6cac3a4640
 luci-theme-7dollar:f9c783f91f5b55828de74bf57b29c39a49156639
-luci-theme-vantage:a7ff63b715bca51effb5ab2d488dfff6cff1b16a
-luci-theme-carbon:f2a2d575d611b16f7f9aad899219aeef25bd2d3e
+luci-theme-vantage:df52ecbf310e67b9ab36fc60c4a7df324427c043
+luci-theme-carbon:80c0837c3ee0374b025e096f6b9cd25c2c41b1db

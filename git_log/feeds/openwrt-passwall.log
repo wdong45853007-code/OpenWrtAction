@@ -1,9 +1,10 @@
 <details> <summary> <b>openwrt-passwall new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall/compare/b3cf8e768ba11d9172e9db7bdd6af17eaf8580f7...89ecdea8a44593c8055811c637b0c1a94d88453f)  
+#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall/compare/89ecdea8a44593c8055811c637b0c1a94d88453f...e1d970495b4d850bf6c94f69a02fe03196bc547a)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-89ecdea8|A-BO|Mon Nov 23 01:41:11 2026 +0800|luci: fix RAW HTTP Host and Path handling
+e1d97049|A-BO|Mon Nov 23 20:33:46 2026 +0800|luci: force the Monoio legacy driver for the Shadow-TLS plugin
+57a6a947|A-BO|Mon Nov 23 20:08:55 2026 +0800|luci: set probe user agent and update homepage test URLs
 </details>
