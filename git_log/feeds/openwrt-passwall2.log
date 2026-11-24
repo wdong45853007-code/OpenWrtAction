@@ -1,0 +1,9 @@
+<details> <summary> <b>openwrt-passwall2 new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall2/compare/d9ba18d0443e6c66fc254beacf63367ca4a4c85d...8900ebcb1daeffce1aabe069b6b5af96901e5ffc)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+8900ebc|David Mandy|Tue Nov 24 18:56:54 2026 +0800|ci: fixes donwload sdk error Signed-off-by: David Mandy <smallprogramzhusir@gmail.com>
+</details>

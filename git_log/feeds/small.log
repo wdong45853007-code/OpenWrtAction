@@ -1,10 +1,9 @@
 <details> <summary> <b>small new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/9b165bce53b6e39c0ca2d8c5891c081b5aba754c...0172f5c46c82a416ce09ff06ecf9b9aba506ff1c)  
+#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/0172f5c46c82a416ce09ff06ecf9b9aba506ff1c...faa15093436a0d051301b0f1f873cc0ba939c334)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-0172f5c4|action|Tue Nov 24 12:27:20 2026 +0800|🎨 luci-app-homeproxy: sync upstream
-0284bcc7|action|Tue Nov 24 11:31:38 2026 +0800|🌿 v2ray-geodata: sync upstream
+faa15093|kenzok8|Tue Nov 24 18:33:37 2026 +0800|🍭 luci-app-clashoo: sync upstream
 </details>
