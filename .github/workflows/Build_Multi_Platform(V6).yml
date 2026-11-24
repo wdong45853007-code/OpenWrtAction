@@ -506,8 +506,22 @@ jobs:
         if: steps.matrix_status.outputs.status != 'success' && !cancelled()
         run: |
           cd $GITHUB_WORKSPACE/openwrt
-          # 预编译二进制包：版本/hash 易随上游变动，清掉缓存里的旧产物，强制重新下载/打包
-          STALE_PKGS="tuic-client"
+
+          # 自动识别 feeds 中“下载预编译二进制”的包：
+          #   Makefile 含 `define Download/`，且不带 `PKG_SOURCE:=` 源码归档（排除本地源码编译包，避免无谓重编）
+          BINARY_PKGS=$(for mk in feeds/*/*/Makefile; do
+              [ -f "$mk" ] || continue
+              if grep -q '^define Download/' "$mk" && ! grep -q '^PKG_SOURCE:=' "$mk"; then
+                  basename "$(dirname "$mk")"
+              fi
+          done | sort -u)
+
+          # 显式兜底名单：已确认的 release 二进制移植包
+          EXTRA_PKGS="tuic-client"
+
+          STALE_PKGS=$(echo "$BINARY_PKGS $EXTRA_PKGS" | tr ' ' '\n' | sort -u | grep -v '^$')
+          echo "==== 待清理的二进制包：${STALE_PKGS} ===="
+
           for pkg in $STALE_PKGS; do
               echo "==== 清理缓存中的 $pkg 旧产物 ===="
               rm -f dl/${pkg}-* 2>/dev/null || true
@@ -696,9 +710,9 @@ jobs:
           
 
           if [[ ${{ fromJSON(github.run_attempt) }} == 3 ]]; then
-              make -j$(nproc) V=s
+              make -j1 V=s
           else
-              make -j$(nproc)
+              make -j1
           fi
           MAKE_EXIT_CODE=$?
 
