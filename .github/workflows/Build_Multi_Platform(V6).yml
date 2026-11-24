@@ -502,6 +502,20 @@ jobs:
 
           df -hT
      
+      - name: Clean Stale Binary Packages From Cache
+        if: steps.matrix_status.outputs.status != 'success' && !cancelled()
+        run: |
+          cd $GITHUB_WORKSPACE/openwrt
+          # 预编译二进制包：版本/hash 易随上游变动，清掉缓存里的旧产物，强制重新下载/打包
+          STALE_PKGS="tuic-client"
+          for pkg in $STALE_PKGS; do
+              echo "==== 清理缓存中的 $pkg 旧产物 ===="
+              rm -f dl/${pkg}-* 2>/dev/null || true
+              rm -rf build_dir/target-*/${pkg}-* 2>/dev/null || true
+              find staging_dir -path "*/stamp/*" -name "*${pkg}*" -delete 2>/dev/null || true
+          done
+          echo "✅ 旧二进制包缓存已清理，将在 download/compile 阶段重新拉取"
+
       - name: SSH connection to Actions
         uses: owenthereal/action-upterm@v2
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -649,11 +663,21 @@ jobs:
           df -hT
 
       - name: Download Package
-        continue-on-error: true
         if: steps.matrix_status.outputs.status != 'success' && !cancelled()
         run: |
           cd $GITHUB_WORKSPACE/openwrt
-          timeout 25m make download -j8
+          MAX_DL_RETRY=2
+          for i in $(seq 0 $MAX_DL_RETRY); do
+              echo "==== make download 第 $((i+1)) / $((MAX_DL_RETRY+1)) 次尝试 ===="
+              timeout 25m make download -j8 && break
+              if [ "$i" -lt "$MAX_DL_RETRY" ]; then
+                  echo "⚠️ download 失败，10 秒后重试..."
+                  sleep 10
+              else
+                  echo "❌ make download 多次失败，终止流程并暴露报错"
+                  exit 1
+              fi
+          done
 
       - name: Compile Packages and Firmware
         id: compile
@@ -673,13 +697,19 @@ jobs:
 
           if [[ ${{ fromJSON(github.run_attempt) }} == 3 ]]; then
               make -j$(nproc) V=s
-              MAKE_EXIT_CODE=$?
-              exit $MAKE_EXIT_CODE
           else
               make -j$(nproc)
-              MAKE_EXIT_CODE=$?
-              exit $MAKE_EXIT_CODE
           fi
+          MAKE_EXIT_CODE=$?
+
+          if [ "$MAKE_EXIT_CODE" -ne 0 ]; then
+              echo "==== 主编译失败（exit=$MAKE_EXIT_CODE），单包 V=s 复跑 tuic-client 抓取详细报错 ===="
+              make package/feeds/small/tuic-client/clean V=s || true
+              make package/feeds/small/tuic-client/download V=s || true
+              make package/feeds/small/tuic-client/compile V=s -j1 || true
+          fi
+
+          exit $MAKE_EXIT_CODE
 
       - name: Organize Files
         id: organize
