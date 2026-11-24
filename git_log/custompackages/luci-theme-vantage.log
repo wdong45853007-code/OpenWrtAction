@@ -1,9 +1,0 @@
-<details> <summary> <b>luci-theme-vantage new commit log :rocket: </b> </summary>
-
-#### [:mega: Full Changelog. ](https://github.com/anothaDev/luci-theme-vantage/compare/f641a33fe9f0b9c66e64d94cb895f693b32ebac6...6fd739d272ec19ae4b3096a4c054610a6bc105e0)  
-:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
-
-SHA|Author|Date|Message
--|-|-|-
-6fd739d|anothaDev|Tue Nov 24 10:31:02 2026 +0200|CI: a manual job that publishes the site page again between releases (#165)
-</details>
