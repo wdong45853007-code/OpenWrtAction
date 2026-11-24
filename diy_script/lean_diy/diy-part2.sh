@@ -20,6 +20,12 @@ fi
 
 #------------------------------------------------------移植包------------------------------------------------------------
 
+# 用仓库内置的 0.107.25 版 adguardhome / luci-app-adguardhome 替换 kenzo feed 同名包
+rm -rf ./feeds/kenzo/adguardhome ./feeds/kenzo/luci-app-adguardhome
+mkdir -p package/custom_packages
+cp -a $PATCHES_SRC_DIR/diy_script/custom_packages/adguardhome package/custom_packages/
+cp -a $PATCHES_SRC_DIR/diy_script/custom_packages/luci-app-adguardhome package/custom_packages/
+
 #-------------------------------------------------------end 移植包--------------------------------------------------------
 
 
