@@ -1,0 +1,10 @@
+<details> <summary> <b>luci-theme-argon new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/jerrykuku/luci-theme-argon/compare/076355f33cd762172a67fa06ec6bd2230d9d9e09...1917d2f0c02d084bf1311310d0fe55f1803ae121)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+1917d2f|jerrykuku|Tue Nov 24 07:33:20 2026 +0000|release: v3.2.0
+4e95d80|jerrykuku|Tue Nov 24 07:25:31 2026 +0000|fix(theme): isolate wallpaper credentials and refresh cached assets
+</details>
