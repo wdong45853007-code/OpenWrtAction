@@ -459,7 +459,7 @@ jobs:
           cd openwrt
 
           # 只保留 ssr-plus 一套代理面板：passwall / passwall2 / openclash / clashoo / daede 全关，子选项一并清理
-          BLOCK_PKGS="luci-app-passwall luci-app-passwall2 luci-app-openclash luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall luci-i18n-passwall2 luci-i18n-openclash luci-i18n-clashoo clashoo nikki"
+          BLOCK_PKGS="luci-app-passwall luci-app-passwall2 luci-app-openclash luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall luci-i18n-passwall2 luci-i18n-openclash luci-i18n-clashoo clashoo nikki luci-app-mosdns mosdns luci-app-smartdns smartdns luci-i18n-mosdns luci-i18n-smartdns luci-app-ssr-plus_INCLUDE_MosDNS"
           force_off() {
             for pkg in $BLOCK_PKGS; do
               sed -i -E "/^CONFIG_PACKAGE_${pkg}([_-][^=]*)?=/d; /^# CONFIG_PACKAGE_${pkg}([_-][^ ]*)? is not set/d" .config
@@ -476,7 +476,7 @@ jobs:
           force_off
 
           echo "==== 校验：重复代理面板是否关闭 ===="
-          grep -nE '^CONFIG_PACKAGE_(luci-app-passwall|luci-app-passwall2|luci-app-openclash|luci-app-clashoo|luci-app-daede|luci-app-nikki|clashoo|nikki)=' .config && echo "WARN: 仍有冲突面板被打开" || echo "OK: 重复代理面板均已关闭"
+          grep -nE '^CONFIG_PACKAGE_(luci-app-passwall|luci-app-passwall2|luci-app-openclash|luci-app-clashoo|luci-app-daede|luci-app-nikki|clashoo|nikki|mosdns|smartdns)=' .config && echo "WARN: 仍有冲突面板被打开" || echo "OK: 重复代理面板均已关闭"
           echo "==== 校验：node 是否已移除 ===="
           grep -nE '^CONFIG_PACKAGE_node' .config || echo "OK: .config 中已无 node"
           echo "==== 校验：ssr-plus 是否保留 ===="
