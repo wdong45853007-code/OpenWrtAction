@@ -85,7 +85,7 @@ jobs:
         delete-untagged: true
         packages: openwrt-base-cache*
         expand-packages: true
-        token: ${{ secrets.MY_SECRET_PAT }}
+        token: ${{ secrets.MY_SECRET_PAT || github.token }}
     
     - name: Stateful Lifecycle Check
       id: lifecycle_check

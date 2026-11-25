@@ -141,8 +141,8 @@ jobs:
           git add .
 
           if ! git diff --cached --quiet; then
-            git config user.name "smallprogram"
-            git config user.email "smallprogram@foxmail.com"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "[CI] Configuration: update code for ${{ matrix.source_code_platform }}"
 
             MAX_RETRIES=10
@@ -282,8 +282,8 @@ jobs:
           git add .
 
           if ! git diff --cached --quiet; then
-            git config user.name "smallprogram"
-            git config user.email "smallprogram@foxmail.com"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "[CI] Git Log: update code"
             
             MAX_RETRIES=10
@@ -378,7 +378,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo -E apt-get -qq update
-          sudo -E apt-get -qq install $(curl -fsSL https://github.com/smallprogram/OpenWrtAction/raw/main/diy_script/${{ matrix.source_code_platform }}_dependence)
+          sudo -E apt-get -qq install $(curl -fsSL https://github.com/${{ github.repository }}/raw/main/diy_script/${{ matrix.source_code_platform }}_dependence)
 
       - name: Initialization Directory
         working-directory: /workdir
@@ -437,7 +437,8 @@ jobs:
           fi
           cd openwrt
 
-          # 不要 node：清掉 node / node-npm / node-* 等条目，避免 feeds/packages/lang/node 的 host 编译
+          # 不要 node：清掉 node 等条目（PACKAGE_node 本身不会触发 host 版 node 编译，
+          # 真正的 host node 来自 diy_script/custom_packages/adguardhome 的 PKG_BUILD_DEPENDS）
           sed -i -E '/^CONFIG_PACKAGE_node(=|-)/d' .config
           make defconfig
 
