@@ -1,9 +1,0 @@
-<details> <summary> <b>luci-theme-carbon new commit log :rocket: </b> </summary>
-
-#### [:mega: Full Changelog. ](https://github.com/mrjoechen/luci-theme-carbon/compare/fbb9fdb593871350c6e15ed95754fb2eb22990db...086d0d39ca0bd3dcaf72540671016e683f678cdc)  
-:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
-
-SHA|Author|Date|Message
--|-|-|-
-086d0d3|mrjoechen|Wed Nov 25 15:27:35 2026 +0800|Add customizable Simple menu with UCI persistence (#19)
-</details>
