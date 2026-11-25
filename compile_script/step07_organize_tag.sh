@@ -92,7 +92,6 @@ if [ -f "release.txt" ]; then
         echo "Total success count: $conclusion_success_count"
         # 将更新后的内容写回release.txt文件
         cp "$release_temp_file" release.txt
-        sed -i 's/src=""/\&/g' release.txt
 
         if [ "$conclusion_success_count" -eq 0 ]; then
             echo "status=failure" >>$GITHUB_OUTPUT
