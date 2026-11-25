@@ -755,6 +755,16 @@ jobs:
           fi
           
 
+          # 预取 tuic-client 预编译二进制：该包 Makefile 只声明了 Download/，dl 里缺文件时 compile 会瞬间失败
+          TUIC_FILE="tuic-client-x86_64-linux-musl-2.0.0-dev10"
+          TUIC_HASH="ee5d5a55ab147b99f16c1e051247487d959df04ad8947097e285e4bde20e39d1"
+          if [ ! -f "dl/$TUIC_FILE" ]; then
+            echo "==== 预取 $TUIC_FILE ===="
+            curl -fsSL --retry 3 -o "dl/$TUIC_FILE" \
+              "https://github.com/Itsusinn/tuic/releases/download/v2.0.0-dev10/tuic-client-x86_64-linux-musl" || true
+          fi
+          echo "$TUIC_HASH  dl/$TUIC_FILE" | sha256sum -c - || echo "WARN: tuic-client 预取校验失败"
+
           make -j$(nproc) 2>&1 | tee build.log
           MAKE_EXIT_CODE=${PIPESTATUS[0]}
 
@@ -762,16 +772,21 @@ jobs:
               echo "==== 主编译失败（exit=$MAKE_EXIT_CODE），打印报错上下文 ===="
               grep -n -A40 'Error \(1\|2\)' build.log | tail -n 300 || true
 
-              # 静默模式往往只留一行 "xxx failed to build"，没有编译器细节；
-              # 已编译过的包都有 stamp，续跑会直接跳到出错那一步，所以用 V=s 原地重跑抓真错
-              echo "==== 用 V=s 续跑抓取编译级报错 ===="
-              make -j1 V=s 2>&1 | tee build-verbose.log | tail -n 150 || true
+              echo "==== 定位失败包 ===="
+              FAILED_PKGS=$(grep -oE 'package/[^ ]+ failed to build' build.log | awk '{print $1}' | sort -u | head -n 5)
+              echo "$FAILED_PKGS"
+
+              # 只复跑失败的单包（V=s），绝不再整棵树 -j1 重跑（那是 3 小时才看得到错）
+              : > build-verbose.log
+              for pkg in $FAILED_PKGS; do
+                echo "==== 单包 compile 复跑: $pkg ===="
+                timeout 15m make "$pkg/compile" V=s 2>&1 | tee -a build-verbose.log | tail -n 120 || true
+                echo "==== 单包 install 复跑: $pkg ===="
+                timeout 5m make "$pkg/install" V=s 2>&1 | tee -a build-verbose.log | tail -n 40 || true
+              done
 
               echo "==== 编译级报错摘要 ===="
-              grep -nE 'error:|Error [12]|No space left|Killed|failed to build' build-verbose.log | tail -n 60 || true
-
-              echo "==== 定位失败包（便于单包复跑）===="
-              grep -oE 'ERROR: [^ ]+(\s+\[host\])? failed to build' build-verbose.log build.log | head -n 5 || true
+              grep -nE 'error:|Error [12]|No space left|Killed|cannot stat|No such file|Hash mismatch' build-verbose.log build.log | tail -n 60 || true
           fi
 
           exit $MAKE_EXIT_CODE
