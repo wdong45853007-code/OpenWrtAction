@@ -46,8 +46,8 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	tar -xzf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR) --strip-components=1
-	chmod +x $(PKG_BUILD_DIR)/AdGuardHome
+	tar -xzf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR)
+	chmod +x $(PKG_BUILD_DIR)/AdGuardHome/AdGuardHome
 endef
 
 define Build/Compile
@@ -55,7 +55,7 @@ endef
 
 define Package/adguardhome/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/AdGuardHome $(1)/usr/bin/AdGuardHome
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/AdGuardHome/AdGuardHome $(1)/usr/bin/AdGuardHome
 	
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/adguardhome.init $(1)/etc/init.d/adguardhome
