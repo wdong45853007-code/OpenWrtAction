@@ -1,6 +1,14 @@
 #
-# This is free software, licensed under the GNU General Public License v2.
-# See /LICENSE for more information.
+# 预编译二进制版 AdGuard Home（不再走源码构建）
+#
+# 改动原因：
+#   1) 0.107.25 依赖 quic-go v0.32.0，该版本内置编译期保险 go121.go，
+#      在 host golang >= 1.21 下必定报错：
+#      cannot use "The version of quic-go you're using can't be built on Go 1.21 yet." as int value
+#   2) 源码构建还需要 node + yarn 编译前端（js-deps js-build），拖慢 CI。
+#
+# 现在直接使用官方 release 的 linux_amd64 包：Web UI 已内嵌进二进制，
+# 构建阶段只需解包，不再依赖 host golang / node / yarn。
 #
 
 include $(TOPDIR)/rules.mk
@@ -9,39 +17,22 @@ PKG_NAME:=adguardhome
 PKG_VERSION:=0.107.25
 PKG_RELEASE:=1
 
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=v$(PKG_VERSION)
-PKG_SOURCE_URL:=https://github.com/AdguardTeam/AdGuardHome
-PKG_MIRROR_HASH:=609e991f0d03c1541e02fc656f8abea686e64ed350729b85ea87fe25640dd03a
+PKG_SOURCE:=AdGuardHome_linux_amd64.tar.gz
+PKG_SOURCE_URL:=https://github.com/AdguardTeam/AdGuardHome/releases/download/v$(PKG_VERSION)
+PKG_HASH:=a43d6fb38347581c99984a33760a730570de4b36c4068bb26b0778d4499ff101
 
 PKG_LICENSE:=GPL-3.0-only
 PKG_LICENSE_FILES:=LICENSE.txt
 PKG_MAINTAINER:=Dobroslaw Kijowski <dobo90@gmail.com>
 
-PKG_BUILD_DEPENDS:=golang/host node/host node-yarn/host
-PKG_BUILD_PARALLEL:=1
-PKG_USE_MIPS16:=0
-
-GO_PKG:=github.com/AdguardTeam/AdGuardHome
-GO_PKG_BUILD_PKG:=github.com/AdguardTeam/AdGuardHome
-
-AGH_BUILD_TIME:=$(shell date -d @$(SOURCE_DATE_EPOCH) +%FT%TZ%z)
-AGH_VERSION_PKG:=github.com/AdguardTeam/AdGuardHome/internal/version
-GO_PKG_LDFLAGS_X:=$(AGH_VERSION_PKG).channel=release \
-	$(AGH_VERSION_PKG).version=$(PKG_SOURCE_VERSION) \
-	$(AGH_VERSION_PKG).buildtime=$(AGH_BUILD_TIME) \
-	$(AGH_VERSION_PKG).goarm=$(GO_ARM) \
-	$(AGH_VERSION_PKG).gomips=$(GO_MIPS)
-
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
 
 define Package/adguardhome
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=Network-wide ads and trackers blocking DNS server
 	URL:=https://github.com/AdguardTeam/AdGuardHome
-	DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
+	DEPENDS:=+ca-bundle
 endef
 
 define Package/adguardhome/conffiles
@@ -53,23 +44,24 @@ define Package/adguardhome/description
 Free and open source, powerful network-wide ads and trackers blocking DNS server.
 endef
 
+define Build/Prepare
+	mkdir -p $(PKG_BUILD_DIR)
+	tar -xzf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR) --strip-components=1
+	chmod +x $(PKG_BUILD_DIR)/AdGuardHome
+endef
+
 define Build/Compile
-	( \
-		pushd $(PKG_BUILD_DIR) ; \
-		NODE_OPTIONS=--openssl-legacy-provider make js-deps js-build ; \
-		popd ; \
-		$(call GoPackage/Build/Compile) ; \
-	)
 endef
 
 define Package/adguardhome/install
-	$(call GoPackage/Package/Install/Bin,$(1))
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/AdGuardHome $(1)/usr/bin/AdGuardHome
+	
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/adguardhome.init $(1)/etc/init.d/adguardhome
-
+	
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DATA) ./files/adguardhome.config $(1)/etc/config/adguardhome
 endef
 
-$(eval $(call GoBinPackage,adguardhome))
 $(eval $(call BuildPackage,adguardhome))
