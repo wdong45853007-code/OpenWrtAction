@@ -24,6 +24,10 @@ on:
         required: false
         type: boolean
         default: false
+      probe_pkg:
+        description: 'Probe single package dir (e.g. package/feeds/small/tuic-client)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -764,6 +768,16 @@ jobs:
               "https://github.com/Itsusinn/tuic/releases/download/v2.0.0-dev10/tuic-client-x86_64-linux-musl" || true
           fi
           echo "$TUIC_HASH  dl/$TUIC_FILE" | sha256sum -c - || echo "WARN: tuic-client 预取校验失败"
+
+          PROBE_PKG="${{ github.event.inputs.probe_pkg }}"
+          if [ -n "$PROBE_PKG" ]; then
+            echo "==== 单包探针 compile: $PROBE_PKG ===="
+            make "$PROBE_PKG/compile" V=s 2>&1 | tail -n 150 || true
+            echo "==== 单包探针 install: $PROBE_PKG ===="
+            make "$PROBE_PKG/install" V=s 2>&1 | tail -n 60 || true
+            echo "==== 探针结束 ===="
+            exit 1
+          fi
 
           make -j$(nproc) 2>&1 | tee build.log
           MAKE_EXIT_CODE=${PIPESTATUS[0]}
