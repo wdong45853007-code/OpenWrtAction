@@ -320,7 +320,7 @@ jobs:
 
   job_compile_and_upload:
     needs: [job_init, job_source_init, job_generate_release_tag]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: ${{ !cancelled() && needs.job_source_init.result == 'success' && needs.job_generate_release_tag.result == 'success' }}
     strategy:
       fail-fast: false
@@ -432,9 +432,19 @@ jobs:
       - name: Load Configuration
         if: steps.matrix_status.outputs.status != 'success'
         run: |
-          [ -e ${{ matrix.value.CONFIGS }}/${{ matrix.platform }}.config ] && cp -r ${{ matrix.value.CONFIGS }}/${{ matrix.platform }}.config openwrt/.config
+          if [ -e ${{ matrix.value.CONFIGS }}/${{ matrix.platform }}.config ]; then
+            cp -r ${{ matrix.value.CONFIGS }}/${{ matrix.platform }}.config openwrt/.config
+          fi
           cd openwrt
+
+          # 不要 node：清掉 node / node-npm / node-* 等条目，避免 feeds/packages/lang/node 的 host 编译
+          sed -i -E '/^CONFIG_PACKAGE_node(=|-)/d' .config
           make defconfig
+
+          echo "==== 校验：node 是否已移除 ===="
+          grep -nE '^CONFIG_PACKAGE_node' .config || echo "OK: .config 中已无 node"
+          echo "==== 校验：ssr-plus 是否保留 ===="
+          grep -E '^CONFIG_PACKAGE_luci-app-ssr-plus' .config || echo "WARN: luci-app-ssr-plus 未选中"
           
 
       - name: Git Restore Mtime (True SSoT) And DL Restore Time
@@ -709,21 +719,37 @@ jobs:
           fi
           
 
-          if [[ ${{ fromJSON(github.run_attempt) }} == 3 ]]; then
-              make -j1 V=s
-          else
-              make -j1
-          fi
-          MAKE_EXIT_CODE=$?
+          make -j1 2>&1 | tee build.log
+          MAKE_EXIT_CODE=${PIPESTATUS[0]}
 
           if [ "$MAKE_EXIT_CODE" -ne 0 ]; then
-              echo "==== 主编译失败（exit=$MAKE_EXIT_CODE），单包 V=s 复跑 tuic-client 抓取详细报错 ===="
-              make package/feeds/small/tuic-client/clean V=s || true
-              make package/feeds/small/tuic-client/download V=s || true
-              make package/feeds/small/tuic-client/compile V=s -j1 || true
+              echo "==== 主编译失败（exit=$MAKE_EXIT_CODE），打印报错上下文 ===="
+              grep -n -A40 'Error \(1\|2\)' build.log | tail -n 300 || true
+
+              # 静默模式往往只留一行 "xxx failed to build"，没有编译器细节；
+              # 已编译过的包都有 stamp，续跑会直接跳到出错那一步，所以用 V=s 原地重跑抓真错
+              echo "==== 用 V=s 续跑抓取编译级报错 ===="
+              make -j1 V=s 2>&1 | tee build-verbose.log | tail -n 150 || true
+
+              echo "==== 编译级报错摘要 ===="
+              grep -nE 'error:|Error [12]|No space left|Killed|failed to build' build-verbose.log | tail -n 60 || true
+
+              echo "==== 定位失败包（便于单包复跑）===="
+              grep -oE 'ERROR: [^ ]+(\s+\[host\])? failed to build' build-verbose.log build.log | head -n 5 || true
           fi
 
           exit $MAKE_EXIT_CODE
+
+      - name: Upload Build Log (On Failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-log-${{ matrix.source_code_platform }}-${{ matrix.platform }}
+          path: |
+            openwrt/build.log
+            openwrt/build-verbose.log
+          retention-days: 7
+          overwrite: true
 
       - name: Organize Files
         id: organize
