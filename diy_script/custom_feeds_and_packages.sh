@@ -14,6 +14,27 @@ export repos=(
   "src-git istore https://github.com/istoreos/istore.git;main"
 )
 
+# 从 kenzok8/jell 稀疏克隆单个包目录（jell 体积大、与现有 feeds 重名包多，只取需要的目录）
+jell_sparse_clone() {
+    local dir="$1"
+    local tmp
+    tmp=$(mktemp -d)
+    if ! git clone --depth 1 --filter=blob:none --sparse -q https://github.com/kenzok8/jell.git "$tmp/jell"; then
+        echo "WARN: clone kenzok8/jell 失败，跳过 $dir"
+        rm -rf "$tmp"
+        return 1
+    fi
+    git -C "$tmp/jell" sparse-checkout set "$dir" >/dev/null 2>&1
+    if [ -d "$tmp/jell/$dir" ]; then
+        rm -rf "${path}${dir}"
+        cp -a "$tmp/jell/$dir" "${path}${dir}"
+        echo "已从 kenzok8/jell 追加: $dir"
+    else
+        echo "WARN: kenzok8/jell 中不存在 $dir"
+    fi
+    rm -rf "$tmp"
+}
+
 # 自定义软件包列表
 clone_custom_packages () {
     local path="package/custom_packages/"
@@ -123,4 +144,9 @@ EOF
 
     echo "默认主题设置已生成！"
     #-------------------------------------------end设置默认主题------------------------------------------
+
+    # 上游 LEDE 已删除的 LuCI 面板，从 kenzok8/jell 稀疏取回
+    jell_sparse_clone luci-app-socat
+    jell_sparse_clone luci-app-verysync
+    jell_sparse_clone luci-app-v2ray-server
 }
