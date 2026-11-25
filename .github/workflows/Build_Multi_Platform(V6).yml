@@ -755,7 +755,7 @@ jobs:
           fi
           
 
-          make -j1 2>&1 | tee build.log
+          make -j$(nproc) 2>&1 | tee build.log
           MAKE_EXIT_CODE=${PIPESTATUS[0]}
 
           if [ "$MAKE_EXIT_CODE" -ne 0 ]; then
