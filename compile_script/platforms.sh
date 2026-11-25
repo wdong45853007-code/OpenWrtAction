@@ -2,24 +2,7 @@
 
 source_code_platforms=(lede)
 
-openwrt_value='{
-  "REPO_URL": "https://github.com/openwrt/openwrt.git",
-  "REPO_BRANCH": "openwrt-25.12",
-  "CONFIGS": "config/openwrt_config",
-  "DIY_P1_SH": "diy_script/openwrt_diy/diy-part1.sh",
-  "DIY_P2_SH": "diy_script/openwrt_diy/diy-part2.sh",
-  "DIY_P3_SH": "diy_script/openwrt_diy/diy-part3.sh",
-  "DIY_P4_SH": "diy_script/openwrt_diy/diy-part4.sh"
-}'
-
-immortalwrt_value='{
-  "REPO_URL": "https://github.com/immortalwrt/immortalwrt.git",
-  "REPO_BRANCH": "openwrt-25.12",
-  "CONFIGS": "config/immortalwrt_config",
-  "DIY_P1_SH": "diy_script/immortalwrt_diy/diy-part1.sh",
-  "DIY_P2_SH": "diy_script/immortalwrt_diy/diy-part2.sh",
-  "DIY_P3_SH": "diy_script/immortalwrt_diy/diy-part3.sh"
-}'
+# 只编译 X86，其它设备（R2S/R4S/R5S/H66K 等）不再构建
 
 lede_value='{
   "REPO_URL": "https://github.com/coolsnowwolf/lede",
