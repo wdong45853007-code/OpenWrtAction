@@ -38,7 +38,7 @@ env:
 
 jobs:
   job_init: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Init
     outputs:
       output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
@@ -63,7 +63,7 @@ jobs:
   
   job_source_init:
     needs: job_init
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Source-Init-${{ matrix.source_code_platform }}
     strategy:
       fail-fast: false

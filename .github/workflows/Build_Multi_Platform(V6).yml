@@ -38,7 +38,7 @@ env:
 
 jobs:
   job_init: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Init
     outputs:
       output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
@@ -62,7 +62,7 @@ jobs:
   
   job_source_init:
     needs: job_init
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Source-Init-${{ matrix.source_code_platform }}
     strategy:
       fail-fast: false
@@ -227,7 +227,7 @@ jobs:
 
   job_generate_release_tag: 
     needs: [job_init, job_source_init]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Generate-Release-Tag-And-Git-Log
     steps:
       - name: Checkout
@@ -428,6 +428,27 @@ jobs:
           tar -xzf download/output.tar.gz
           rm -rf download/output.tar.gz
           sudo chown -R $USER:$GROUPS /workdir/openwrt
+
+      # 兜底：若 source artifact / 缓存里带着别的发行版编出来的 host 工具（典型报错
+      # "scripts/config/conf: version `GLIBC_2.xx' not found"），先清掉再让 make 重建
+      - name: Purge Foreign-Host Host Tools
+        if: steps.matrix_status.outputs.status != 'success'
+        run: |
+          cd /workdir/openwrt
+          BAD=0
+          for f in scripts/config/conf staging_dir/host/bin/mksquashfs; do
+            [ -e "$f" ] || continue
+            if ! ldd "$f" >/dev/null 2>&1; then
+              echo "glibc 不兼容: $f"
+              BAD=1
+            fi
+          done
+          if [ "$BAD" = "1" ]; then
+            rm -rf scripts/config/conf scripts/config/*.o staging_dir/host build_dir/host staging_dir/hostpkg
+            echo "已清理预编译 host 工具，后续 make 会重建"
+          else
+            echo "host 工具与当前 runner 兼容"
+          fi
 
       - name: Load Configuration
         if: steps.matrix_status.outputs.status != 'success'
@@ -814,7 +835,7 @@ jobs:
   job_organize_tags:
     needs: [job_init, job_source_init, job_generate_release_tag, job_compile_and_upload]
     if: ${{ !cancelled() && needs.job_source_init.result == 'success' && needs.job_generate_release_tag.result == 'success' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Organize-Release-Tags
     outputs:
       output_tag_status: ${{ steps.organize_tags.outputs.status }}
@@ -856,7 +877,7 @@ jobs:
           body_path: release.txt
 
   rerun-failed-jobs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [job_init, job_source_init, job_generate_release_tag, job_compile_and_upload, job_organize_tags]
     if: failure() && fromJSON(github.run_attempt) < 3  && !cancelled()
     steps:
