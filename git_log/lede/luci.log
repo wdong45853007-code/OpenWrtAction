@@ -1,9 +1,0 @@
-<details> <summary> <b>luci new commit log :rocket: </b> </summary>
-
-#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/luci/compare/2de4d5b66d6de0814d513dea24caceaf96d106f9...f3e3ad228be8cc63a51eaede79cb895798015da1)  
-:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
-
-SHA|Author|Date|Message
--|-|-|-
-f3e3ad228b|coolsnowwolf|Thu Nov 26 22:54:19 2026 +0800|luci: preserve wireless bitrate units and precision
-</details>

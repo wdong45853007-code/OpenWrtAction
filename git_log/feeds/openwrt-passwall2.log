@@ -1,0 +1,9 @@
+<details> <summary> <b>openwrt-passwall2 new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall2/compare/ba02b03c91d7f7ec515583af048f171b1302f58b...c8c1c67d6f12ea3bf3d05a3b186dffd538955502)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+c8c1c67|Gypsophila|Fri Nov 27 00:51:53 2026 +0800|luci: detect built-in transparent proxy support (#1363)
+</details>
