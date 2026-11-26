@@ -782,7 +782,11 @@ jobs:
             exit 1
           fi
 
-          make -j$(nproc) BUILD_LOG=1 2>&1 | tee build.log
+          # 多线程编译：并发数 = CPU 核数 × 2（GitHub 标准 runner 4 vCPU / 16 GB，-j8 足够且不 OOM）
+          # 需要保守时改回：make -j$(nproc)
+          JOBS=$(( $(nproc) * 2 ))
+          echo "==== 主编译并发数：-j${JOBS}（nproc=$(nproc)）===="
+          make -j${JOBS} BUILD_LOG=1 2>&1 | tee build.log
           MAKE_EXIT_CODE=${PIPESTATUS[0]}
 
           if [ "$MAKE_EXIT_CODE" -ne 0 ]; then
