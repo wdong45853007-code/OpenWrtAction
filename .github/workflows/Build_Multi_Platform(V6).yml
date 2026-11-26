@@ -780,8 +780,38 @@ jobs:
               echo "==== 主编译失败（exit=$MAKE_EXIT_CODE），打印报错上下文 ===="
               grep -n -A40 'Error \(1\|2\)' build.log | tail -n 300 || true
 
+              # 并行编译时 OpenWrt 把每个包的输出重定向到 logs/ 目录，真正的报错不在 build.log 里
+              echo "==== OpenWrt 每包日志 error.txt（真正的失败点）===="
+              if [ -d logs ]; then
+                ERRFILES=$(find logs -name 'error.txt' 2>/dev/null | head -n 10)
+                if [ -n "$ERRFILES" ]; then
+                  for f in $ERRFILES; do
+                    echo "----- $f -----"
+                    cat "$f"
+                    d=$(dirname "$f")
+                    for g in "$d"/*.txt; do
+                      [ -f "$g" ] || continue
+                      [ "$(basename "$g")" = "error.txt" ] && continue
+                      echo "  >> 尾部: $g"
+                      tail -n 40 "$g"
+                    done
+                  done
+                else
+                  echo "未找到 error.txt，打印最近改动的日志尾部："
+                  for f in $(ls -t $(find logs -name '*.txt' 2>/dev/null) 2>/dev/null | head -n 8); do
+                    echo "----- $f -----"
+                    tail -n 40 "$f"
+                  done
+                fi
+              else
+                echo "logs/ 目录不存在"
+              fi
+
               echo "==== 定位失败包 ===="
               FAILED_PKGS=$(grep -oE 'package/[^ ]+ failed to build' build.log | awk '{print $1}' | sort -u | head -n 5)
+              if [ -z "$FAILED_PKGS" ]; then
+                FAILED_PKGS=$(find logs -name 'error.txt' 2>/dev/null | sed -E 's#^logs/##; s#/error.txt$##' | head -n 5)
+              fi
               echo "$FAILED_PKGS"
 
               # 只复跑失败的单包（V=s），绝不再整棵树 -j1 重跑（那是 3 小时才看得到错）
@@ -807,6 +837,7 @@ jobs:
           path: |
             openwrt/build.log
             openwrt/build-verbose.log
+            openwrt/logs/**/error.txt
           retention-days: 7
           overwrite: true
 
