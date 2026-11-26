@@ -773,7 +773,7 @@ jobs:
             exit 1
           fi
 
-          make -j$(nproc) 2>&1 | tee build.log
+          make -j$(nproc) BUILD_LOG=1 2>&1 | tee build.log
           MAKE_EXIT_CODE=${PIPESTATUS[0]}
 
           if [ "$MAKE_EXIT_CODE" -ne 0 ]; then
@@ -813,6 +813,13 @@ jobs:
                 FAILED_PKGS=$(find logs -name 'error.txt' 2>/dev/null | sed -E 's#^logs/##; s#/error.txt$##' | head -n 5)
               fi
               echo "$FAILED_PKGS"
+
+              # 编译全过、只在 install 阶段挂掉时：串行 + V=s 复跑，直接把真实报错打出来
+              echo "==== 串行复跑 package/install（V=s）===="
+              timeout 45m make -j1 package/install V=s 2>&1 | tee -a build-verbose.log | tail -n 250 || true
+
+              echo "==== 串行复跑 target/install（V=s）===="
+              timeout 45m make -j1 target/install V=s 2>&1 | tee -a build-verbose.log | tail -n 250 || true
 
               # 只复跑失败的单包（V=s），绝不再整棵树 -j1 重跑（那是 3 小时才看得到错）
               : > build-verbose.log
