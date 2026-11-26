@@ -893,6 +893,19 @@ jobs:
               done
           fi
 
+          # GitHub Release 单资产上限 2 GiB：未压缩的 *.vhdx 大约 2~4 GiB，
+          # 一旦超限整个 release 步骤会失败（编译其实已经成功）。
+          # 这里先 gzip 再上传，压缩后一般 1 GiB 以内，Hyper-V 用户解压即用。
+          echo "==== 压缩超 2GiB 的 vhdx ===="
+          for f in *.vhdx; do
+            [ -f "$f" ] || continue
+            echo "gzip -9 $f ($(du -h "$f" | cut -f1))"
+            gzip -9 "$f"
+          done
+
+          echo "==== 待上传资产清单 ===="
+          ls -lhS | head -n 30
+
           echo "FIRMWARE=$firmware_path" >> $GITHUB_OUTPUT
 
       # - name: Download Tags (For Release Body)
