@@ -96,7 +96,9 @@ jobs:
         echo "force_rebuild=false" >> "$GITHUB_OUTPUT"
         
     - name: Trigger build
-      if: steps.cacheHash.outputs.cache-hit != 'true'
+      # 已停用：不再自动 dispatch 编译（避免与手动触发的构建撞车、重复烧 runner）
+      # 需要恢复时把下面这行改回：if: steps.cacheHash.outputs.cache-hit != 'true'
+      if: false
       uses: peter-evans/repository-dispatch@main
       with:
         token: ${{ github.token }}
