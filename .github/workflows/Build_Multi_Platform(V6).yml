@@ -463,7 +463,7 @@ jobs:
           cd openwrt
 
           # 只保留 ssr-plus 一套代理面板：passwall / passwall2 / openclash / clashoo / daede 全关，子选项一并清理
-          BLOCK_PKGS="luci-app-passwall2 luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall2 luci-i18n-clashoo clashoo nikki luci-app-mosdns mosdns luci-app-smartdns smartdns luci-i18n-mosdns luci-i18n-smartdns luci-app-ssr-plus_INCLUDE_MosDNS tuic-client"
+          BLOCK_PKGS="luci-app-passwall2 luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall2 luci-i18n-clashoo clashoo nikki luci-app-mosdns mosdns luci-app-smartdns smartdns luci-i18n-mosdns luci-i18n-smartdns luci-app-ssr-plus_INCLUDE_MosDNS tuic-client luci-app-bandix luci-app-bandix-plus luci-i18n-bandix"
           force_off() {
             for pkg in $BLOCK_PKGS; do
               sed -i -E "/^CONFIG_PACKAGE_${pkg}([_-][^=]*)?=/d; /^# CONFIG_PACKAGE_${pkg}([_-][^ ]*)? is not set/d" .config
@@ -471,22 +471,16 @@ jobs:
             done
           }
 
-          # 流量监控只留多接口版 bandix-plus：单接口版 luci-app-bandix 与它各挂一套 eBPF/tc 钩子，同开会互抢、统计丢数据
-          # 注意必须精确匹配：若走 force_off 的前缀匹配，会把 luci-app-bandix-plus 一起关掉
-          force_off_bandix() {
-            sed -i -E '/^CONFIG_PACKAGE_luci-app-bandix=/d; /^# CONFIG_PACKAGE_luci-app-bandix is not set/d; /^CONFIG_PACKAGE_luci-i18n-bandix-[a-z]{2}(-[a-z]{2})?=[ym]/d; /^# CONFIG_PACKAGE_luci-i18n-bandix-[a-z]{2}(-[a-z]{2})? is not set/d' .config
-            echo "# CONFIG_PACKAGE_luci-app-bandix is not set" >> .config
-          }
+          # bandix 两套（单接口版 + 多接口版）全部不要：BLOCK_PKGS 里的前缀匹配
+          # luci-app-bandix 本来就覆盖 luci-app-bandix-plus 与 luci-i18n-bandix-*
 
           # 不要 node：清掉 node 等条目（PACKAGE_node 本身不会触发 host 版 node 编译，
           # 真正的 host node 来自 diy_script/custom_packages/adguardhome 的 PKG_BUILD_DEPENDS）
           sed -i -E '/^CONFIG_PACKAGE_node(=|-)/d' .config
           force_off
-          force_off_bandix
           make defconfig
           # defconfig 之后再关一次：编译阶段只读 .config，这里关掉就真的不会编进去
           force_off
-          force_off_bandix
 
           echo "==== 校验：重复代理面板是否关闭 ===="
           grep -nE '^CONFIG_PACKAGE_(luci-app-passwall2|luci-app-clashoo|luci-app-daede|luci-app-nikki|clashoo|nikki|mosdns|smartdns)=' .config && echo "WARN: 仍有冲突面板被打开" || echo "OK: 冲突面板均已关闭"
@@ -494,8 +488,8 @@ jobs:
           grep -nE '^CONFIG_PACKAGE_node' .config || echo "OK: .config 中已无 node"
           echo "==== 校验：ssr-plus 是否保留 ===="
           grep -E '^CONFIG_PACKAGE_luci-app-ssr-plus' .config || echo "WARN: luci-app-ssr-plus 未选中"
-          echo "==== 校验：bandix 只留 plus ===="
-          grep -E '^CONFIG_PACKAGE_(luci-app-bandix|luci-app-bandix-plus)=' .config || echo "WARN: bandix 系列均未选中"
+          echo "==== 校验：bandix 是否已移除 ===="
+          grep -E '^CONFIG_PACKAGE_(luci-app-bandix|luci-app-bandix-plus)=' .config && echo "WARN: bandix 仍被选中" || echo "OK: bandix / bandix-plus 均已关闭"
           
 
       - name: Git Restore Mtime (True SSoT) And DL Restore Time
