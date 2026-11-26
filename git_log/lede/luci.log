@@ -1,0 +1,9 @@
+<details> <summary> <b>luci new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/luci/compare/9a09032dd7a995d4f203b92941a3363112feb651...d4e08234deb3cfc74101492465f6e4bfad75840d)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+d4e08234de|coolsnowwolf|Thu Nov 26 17:17:15 2026 +0800|luci-app-upnp: use the private WAN IPv4 forwarding option
+</details>
