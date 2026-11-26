@@ -1,9 +1,10 @@
 <details> <summary> <b>luci new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/luci/compare/9a09032dd7a995d4f203b92941a3363112feb651...d4e08234deb3cfc74101492465f6e4bfad75840d)  
+#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/luci/compare/d4e08234deb3cfc74101492465f6e4bfad75840d...2de4d5b66d6de0814d513dea24caceaf96d106f9)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-d4e08234de|coolsnowwolf|Thu Nov 26 17:17:15 2026 +0800|luci-app-upnp: use the private WAN IPv4 forwarding option
+2de4d5b66d|21hkcloud|Thu Nov 26 06:35:13 2026 -0800|luci-app-51ddns: add remote access setup interface (#428)
+392ce39431|coolsnowwolf|Thu Nov 26 22:12:49 2026 +0800|luci-theme-design: align backup and firmware action buttons
 </details>

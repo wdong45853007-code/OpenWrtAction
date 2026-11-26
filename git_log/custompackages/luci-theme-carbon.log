@@ -1,0 +1,15 @@
+<details> <summary> <b>luci-theme-carbon new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/mrjoechen/luci-theme-carbon/compare/086d0d39ca0bd3dcaf72540671016e683f678cdc...5cd2c1afbf91c073867e06c8531c46dccf2a9b9d)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+5cd2c1a|mrjoechen|Thu Nov 26 21:57:49 2026 +0800|Wait for button style transitions in browser tests
+4a55c93|mrjoechen|Thu Nov 26 21:36:48 2026 +0800|Make browser test screenshots opt-in and wait for stylesheet in button variants test
+4223120|mrjoechen|Thu Nov 26 21:27:11 2026 +0800|Release Carbon v1.2.0
+24c6b58|Joe Chen|Thu Nov 26 21:22:55 2026 +0800|Update asset link in Chinese README
+37d2a7c|Joe Chen|Thu Nov 26 21:22:37 2026 +0800|Update asset link in README.md
+ce60120|mrjoechen|Thu Nov 26 19:59:53 2026 +0800|Fix false "No wireless" status via luci-rpc and iwinfo fallbacks (#15)
+55184e9|mrjoechen|Wed Nov 25 17:42:48 2026 +0800|Support drag-to-reorder in Simple menu customizer and sidebar
+</details>

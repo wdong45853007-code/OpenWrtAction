@@ -1,0 +1,9 @@
+<details> <summary> <b>openwrt-passwall new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/Openwrt-Passwall/openwrt-passwall/compare/bc622894605a7b4d88028cb172e9807c57e6cdca...6d4b5671769c480382014f2eb7a77690cc8738c2)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+6d4b5671|A-BO|Thu Nov 26 20:13:33 2026 +0800|luci: Show an error when a share URL is too long for a QR code
+</details>
