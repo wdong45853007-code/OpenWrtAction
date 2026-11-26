@@ -463,7 +463,7 @@ jobs:
           cd openwrt
 
           # 只保留 ssr-plus 一套代理面板：passwall / passwall2 / openclash / clashoo / daede 全关，子选项一并清理
-          BLOCK_PKGS="luci-app-passwall2 luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall2 luci-i18n-clashoo clashoo nikki luci-app-mosdns mosdns luci-app-smartdns smartdns luci-i18n-mosdns luci-i18n-smartdns luci-app-ssr-plus_INCLUDE_MosDNS tuic-client luci-app-bandix luci-app-bandix-plus luci-i18n-bandix"
+          BLOCK_PKGS="luci-app-passwall2 luci-app-clashoo luci-app-daede luci-app-nikki luci-i18n-passwall2 luci-i18n-clashoo clashoo nikki luci-app-mosdns mosdns luci-app-smartdns smartdns luci-i18n-mosdns luci-i18n-smartdns luci-app-ssr-plus_INCLUDE_MosDNS tuic-client luci-app-bandix luci-app-bandix-plus luci-i18n-bandix wg-installer-client"
           force_off() {
             for pkg in $BLOCK_PKGS; do
               sed -i -E "/^CONFIG_PACKAGE_${pkg}([_-][^=]*)?=/d; /^# CONFIG_PACKAGE_${pkg}([_-][^ ]*)? is not set/d" .config
@@ -490,6 +490,10 @@ jobs:
           grep -E '^CONFIG_PACKAGE_luci-app-ssr-plus' .config || echo "WARN: luci-app-ssr-plus 未选中"
           echo "==== 校验：bandix 是否已移除 ===="
           grep -E '^CONFIG_PACKAGE_(luci-app-bandix|luci-app-bandix-plus)=' .config && echo "WARN: bandix 仍被选中" || echo "OK: bandix / bandix-plus 均已关闭"
+          echo "==== 校验：wg-installer-client 是否已关闭（与 server 抢同一个 wg.sh）===="
+          grep -E '^CONFIG_PACKAGE_wg-installer-client' .config && echo "WARN: wg-installer-client 仍被选中" || echo "OK: wg-installer-client 已关闭"
+          echo "==== 校验：wg-installer-server 是否保留 ===="
+          grep -E '^CONFIG_PACKAGE_wg-installer-server=' .config || echo "WARN: wg-installer-server 未选中"
           
 
       - name: Git Restore Mtime (True SSoT) And DL Restore Time
@@ -819,12 +823,25 @@ jobs:
               fi
               echo "$FAILED_PKGS"
 
+              # opkg 层失败（package/install Error 255）：冲突/缺依赖只会以 "Collected errors" 形式出现，
+              # 最容易漏抓，单独打出来
+              echo "==== opkg 收集到的错误（Collected errors）===="
+              grep -n -A6 'Collected errors' build.log build-verbose.log 2>/dev/null | tail -n 60 || echo "未发现 Collected errors"
+
               # 编译全过、只在 install 阶段挂掉时：串行 + V=s 复跑，直接把真实报错打出来
               echo "==== 串行复跑 package/install（V=s）===="
               timeout 45m make -j1 package/install V=s 2>&1 | tee -a build-verbose.log | tail -n 250 || true
 
-              echo "==== 串行复跑 target/install（V=s）===="
-              timeout 45m make -j1 target/install V=s 2>&1 | tee -a build-verbose.log | tail -n 250 || true
+              echo "==== opkg 收集到的错误（复跑后）===="
+              grep -n -A6 'Collected errors' build-verbose.log 2>/dev/null | tail -n 60 || echo "未发现 Collected errors"
+
+              # target/install 只用于兜底，命中过 opkg 冲突就不用长跑了
+              if grep -qE 'Collected errors|Cannot install package' build.log build-verbose.log 2>/dev/null; then
+                echo "已确认是 opkg 层包冲突，跳过 target/install 长跑"
+              else
+                echo "==== 串行复跑 target/install（V=s）===="
+                timeout 10m make -j1 target/install V=s 2>&1 | tee -a build-verbose.log | tail -n 250 || true
+              fi
 
               # 只复跑失败的单包（V=s），绝不再整棵树 -j1 重跑（那是 3 小时才看得到错）
               : > build-verbose.log
@@ -836,7 +853,7 @@ jobs:
               done
 
               echo "==== 编译级报错摘要 ===="
-              grep -nE 'error:|Error [12]|No space left|Killed|cannot stat|No such file|Hash mismatch' build-verbose.log build.log | tail -n 60 || true
+              grep -nE 'error:|Error [12]|Collected errors|Cannot install package|already provided by package|No space left|Killed|cannot stat|No such file|Hash mismatch' build-verbose.log build.log | tail -n 60 || true
           fi
 
           exit $MAKE_EXIT_CODE
