@@ -1,9 +1,0 @@
-<details> <summary> <b>lede new commit log :rocket: </b> </summary>
-
-#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/lede/compare/e1c6f44884697194f2b90588d8fe7c636bb9f09c...bc7f99dd449ac05543d8bbbd42b21ddb33c70cae)  
-:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
-
-SHA|Author|Date|Message
--|-|-|-
-bc7f99dd4|coolsnowwolf|Thu Nov 26 10:26:57 2026 +0800|mac80211: adapt backports to stable kernel API changes
-</details>
