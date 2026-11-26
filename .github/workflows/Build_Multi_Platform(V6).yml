@@ -976,7 +976,10 @@ jobs:
   rerun-failed-jobs:
     runs-on: ubuntu-22.04
     needs: [job_init, job_source_init, job_generate_release_tag, job_compile_and_upload, job_organize_tags]
-    if: failure() && fromJSON(github.run_attempt) < 3  && !cancelled()
+    # 已停用自动重跑：失败后用同一 commit 重跑必然同样失败，只会白烧 3~4 小时/次
+    if: false
+    # 原条件（如需恢复重跑，改回下面这行）
+    # if: failure() && fromJSON(github.run_attempt) < 3  && !cancelled()
     steps:
       - name: Rerun failed jobs in the current workflow
         env:
