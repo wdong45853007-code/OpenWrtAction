@@ -1,0 +1,12 @@
+<details> <summary> <b>packages new commit log :rocket: </b> </summary>
+
+#### [:mega: Full Changelog. ](https://github.com/coolsnowwolf/packages/compare/7a3926f03f9a9c156610c0ace0739c14561ea3a6...7f1e8c1a3ba5f39c0dc3f98dd52e6a40dee0d579)  
+:heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
+
+SHA|Author|Date|Message
+-|-|-|-
+7f1e8c1a|github-actions[bot]|Fri Nov 27 11:01:01 2026 +0000|ci: sync upstream packages
+5cdc9fe8|coolsnowwolf|Fri Nov 27 16:30:29 2026 +0800|openvpn: support optional Qualcomm NSS data channel acceleration
+416f91a3|coolsnowwolf|Fri Nov 27 13:53:25 2026 +0800|Merge pull request #1159 from sKyissKy/feat/rust-auto-host-and-ondemand-llvm
+a79405c9|sKyissKy|Fri Nov 20 00:30:49 2026 +0800|rust: auto-detect compatible host LLVM and build missing backends on demand
+</details>

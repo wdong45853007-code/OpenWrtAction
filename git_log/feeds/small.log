@@ -1,10 +1,9 @@
 <details> <summary> <b>small new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/32c66145df4d1c92439084cd43282977701cd075...96b0d716f94ff3f06fa8d857108bac6b3f1bcf37)  
+#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/96b0d716f94ff3f06fa8d857108bac6b3f1bcf37...9eca36076abafd42910f858b361ed0a48c46e46d)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-96b0d716|action|Fri Nov 27 01:54:50 2026 +0800|🍡 luci-app-passwall2: sync upstream
-20f620b2|action|Fri Nov 27 01:54:50 2026 +0800|🍡 luci-app-passwall: sync upstream
+9eca3607|action|Fri Nov 27 10:27:42 2026 +0800|🎁 luci-app-homeproxy: sync upstream
 </details>
