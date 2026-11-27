@@ -1,9 +1,11 @@
 <details> <summary> <b>luci-theme-vantage new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/anothaDev/luci-theme-vantage/compare/17d46e2dc6d6de2e16b08777acc15bb315f4bb34...85b66dbd14841d29dc80bcbc18dedfcb1fc6c065)  
+#### [:mega: Full Changelog. ](https://github.com/anothaDev/luci-theme-vantage/compare/85b66dbd14841d29dc80bcbc18dedfcb1fc6c065...a2e2eec03371fcd48824892301604bda8813d419)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-85b66db|anothaDev|Fri Nov 27 07:41:38 2026 +0100|Review before 1.2.2: mesh peers leave every client count, a short card reaches down to the wide one under it (#177)
+a2e2eec|anothaDev|Fri Nov 27 15:47:30 2026 +0100|Release manifest for v1.2.2 (#181)
+0d39c7c|anothaDev|Fri Nov 27 15:26:21 2026 +0100|Release 1.2.2: an access point's own addresses on a wire with several VLANs, mesh peers, no pairing beside a listener with its own command, IPv6 in the firewall overview (#180)
+685934a|anothaDev|Fri Nov 27 15:18:13 2026 +0100|Project review: no pairing beside an SSH listener with its own command, IPv6 in the firewall overview, a silent device is not Live, signing in a job of its own (#179)
 </details>

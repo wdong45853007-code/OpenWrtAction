@@ -1,12 +1,15 @@
 <details> <summary> <b>openwrt-packages new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/kenzok8/openwrt-packages/compare/593353ae67d2af595b93d849dc307b18681f6bf6...4b57ef1798728c21ad408f9bfeb2e23d3e2a1f9d)  
+#### [:mega: Full Changelog. ](https://github.com/kenzok8/openwrt-packages/compare/4b57ef1798728c21ad408f9bfeb2e23d3e2a1f9d...17b693e1c3b5988342ba8e65695894f844d8091e)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-4b57ef17|kenzok8|Fri Nov 27 09:11:51 2026 +0800|Rebuild the package index
-8b1ea6a2|action|Fri Nov 27 09:11:32 2026 +0800|🌸 sync: refresh packages
-52bb668a|action|Fri Nov 27 09:11:32 2026 +0800|🌸 luci-theme-vantage: sync upstream
-d1473724|action|Fri Nov 27 09:11:32 2026 +0800|🌸 luci-app-vantage: sync upstream
+17b693e1|kenzok8|Fri Nov 27 23:41:56 2026 +0800|Rebuild the package index
+01e510c0|action|Fri Nov 27 23:41:37 2026 +0800|🍓 sync: refresh packages
+dd01a409|action|Fri Nov 27 23:41:37 2026 +0800|🍓 quickstart: update to 0.18.0
+4b631bc4|action|Fri Nov 27 23:41:37 2026 +0800|🍓 luci-theme-vantage: update to 1.2.2
+93c54598|action|Fri Nov 27 23:41:37 2026 +0800|🍓 luci-theme-carbon: Allow dismissing simple mode Pro-mode hint and persist in localStorage
+824017fd|action|Fri Nov 27 23:41:37 2026 +0800|🍓 luci-app-vantage: update to 1.2.2
+69278501|action|Fri Nov 27 23:41:37 2026 +0800|🍓 luci-app-quickstart: update to 0.18.0-r1
 </details>
