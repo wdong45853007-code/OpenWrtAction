@@ -82,7 +82,7 @@ clone_custom_packages () {
     # git clone https://github.com/pymumu/openwrt-smartdns.git ${path}openwrt-smartdns
     git clone https://github.com/pymumu/luci-app-smartdns.git ${path}luci-app-smartdns
 
-    git clone https://github.com/timsaya/openwrt-bandix.git ${path}openwrt-bandix
+    git clone -b v0.12.12 --single-branch https://github.com/timsaya/openwrt-bandix.git ${path}openwrt-bandix
     git clone https://github.com/timsaya/luci-app-bandix.git ${path}luci-app-bandix
 
     git clone https://github.com/timsaya/openwrt-bandix-plus.git ${path}openwrt-bandix-plus
