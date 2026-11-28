@@ -1,16 +1,10 @@
 <details> <summary> <b>small new commit log :rocket: </b> </summary>
 
-#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/9eca36076abafd42910f858b361ed0a48c46e46d...7d392d68f50f6eeab3fb13c1b0583a409e4adb58)  
+#### [:mega: Full Changelog. ](https://github.com/kenzok8/small/compare/7d392d68f50f6eeab3fb13c1b0583a409e4adb58...d9d91f1a0963b24d24fa9584f38d9f76cfeded55)  
 :heavy_exclamation_mark: The list displays only the latest 15 commit logs.  
 
 SHA|Author|Date|Message
 -|-|-|-
-7d392d68|action|Fri Nov 27 23:42:00 2026 +0800|🎨 luci-app-ssr-plus: sync upstream
-37657b5c|action|Fri Nov 27 23:41:59 2026 +0800|🎨 luci-app-passwall2: sync upstream
-78d9a8ec|action|Fri Nov 27 23:41:59 2026 +0800|🎨 luci-app-passwall: sync upstream
-ae10bf9a|action|Fri Nov 27 21:13:03 2026 +0800|🌿 v2ray-geodata: sync upstream
-8d717b14|action|Fri Nov 27 21:13:03 2026 +0800|🌿 sing-box: update to 1.15.0_alpha14
-8b915e23|action|Fri Nov 27 21:13:03 2026 +0800|🌿 luci-app-passwall2: sync upstream
-2fb1a53b|action|Fri Nov 27 21:13:03 2026 +0800|🌿 luci-app-passwall: sync upstream
-336bd440|action|Fri Nov 27 21:13:03 2026 +0800|🌿 daed: sync upstream
+d9d91f1a|action|Sat Nov 28 07:46:13 2026 +0800|🌸 v2ray-geodata: sync upstream
+32c622d4|action|Sat Nov 28 07:46:13 2026 +0800|🌸 luci-app-homeproxy: sync upstream
 </details>
